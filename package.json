@@ -1,0 +1,47 @@
+{
+  "name": "datacube-image-slicer",
+  "version": "1.0.0",
+  "author": "cdaringe",
+  "contributors": [
+    {
+      "name": "Sergey Plis"
+    }
+  ],
+  "description": "Interactive 3-paned/3-axis datacube image slicer",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "mathjs": "^3.16.4"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jsdock": "^1.0.3",
+    "npm-run-all": "^4.1.1",
+    "nsp": "^2.8.1",
+    "standard": "^10.0.3",
+    "tape": "^4.8.0",
+    "test": "^0.6.0",
+    "testem": "^1.18.4",
+    "webpack": "^3.6.0"
+  },
+  "keywords": [
+    "canvas",
+    "mri",
+    "datacube",
+    "heatmap",
+    "dom",
+    "3d"
+  ],
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdaringe/datacube-image-slicer.git"
+  },
+  "scripts": {
+    "precommit": "run-p check lint test check-vulnerablities",
+    "lint": "standard",
+    "test": "testem",
+    "docs:build:demo": "cd demo && npm run build",
+    "docs:build:api": "jsdock build && rm -rf demo/public/docs && mv docs demo/public/",
+    "docs:publish": "gh-pages -d demo/build"
+  }
+}

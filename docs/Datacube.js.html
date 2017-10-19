@@ -24,7 +24,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Datacube.html">Datacube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#getXYPerspectiveDimensions">getXYPerspectiveDimensions</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#querySlice">querySlice</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DatacubeView.html">DatacubeView</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#render">render</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Datacube.html">Datacube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#querySlice">querySlice</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DatacubeView.html">DatacubeView</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#mousemove">mousemove</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#render">render</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li>
 </nav>
 
 <div id="main">
@@ -82,24 +82,6 @@ function Datacube (opts) {
   this.xRange = times(this.dims.x)
   this.yRange = times(this.dims.y)
   this.zRange = times(this.dims.z)
-}
-
-/**
- * Get XY dimensions assuming an orthoganol view
- * @param {Object} opts
- * @param {Number} opts.direction 1, -1
- * @param {string} opts.axis x,y,z
- */
-Datacube.prototype.getXYPerspectiveDimensions = function (opts) {
-  var slice
-  if (opts.axis === 'x') {
-    slice = this.querySlice({ value: 1, axis: 'x' })
-  } else if (opts.axis === 'y') {
-    slice = this.querySlice({ value: 1, axis: 'y' })
-  } else if (opts.axis === 'z') {
-    slice = this.querySlice({ value: 1, axis: 'z' })
-  }
-  return [ slice.length, slice[0].length ]
 }
 
 /**

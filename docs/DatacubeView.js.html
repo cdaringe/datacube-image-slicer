@@ -24,7 +24,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Datacube.html">Datacube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#getXYPerspectiveDimensions">getXYPerspectiveDimensions</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#querySlice">querySlice</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DatacubeView.html">DatacubeView</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#render">render</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Datacube.html">Datacube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Datacube.html#querySlice">querySlice</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DatacubeView.html">DatacubeView</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#mousemove">mousemove</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DatacubeView.html#render">render</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li>
 </nav>
 
 <div id="main">
@@ -67,13 +67,14 @@ function DatacubeView (view) {
   this.axis = view.axis
   if (view.onMouseMove) this.onMouseMove = view.onMouseMove
   this.ctx = this.node.getContext('2d')
-  this.boundingClientRectangle = this.node.getBoundingClientRect()
-  this.node.addEventListener('resize', this.updateBoundingClientRectangle.bind(this))
   this.node.addEventListener('mousemove', this.mousemove.bind(this))
   this.position = Object.assign({}, this.datacube.midpoints)
   this.render()
 }
 
+/**
+ * @private
+ */
 DatacubeView.prototype.constrainAxisPosition = function (opts) {
   var axis = opts.axis
   var requested = opts.requested
@@ -82,6 +83,12 @@ DatacubeView.prototype.constrainAxisPosition = function (opts) {
   return requested
 }
 
+/**
+ * Handles a mousemove event on the canvas node &amp; updates the view's `position`
+ * value.
+ * @param {Event} evt
+ * @returns {undefined}
+ */
 DatacubeView.prototype.mousemove = function (evt) {
   if (this.axis === 'z') {
     this.position.x = this.constrainAxisPosition({ axis: 'x', requested: evt.offsetX })
@@ -97,15 +104,9 @@ DatacubeView.prototype.mousemove = function (evt) {
 }
 
 /**
- * Draws passed data onto the canvas
- * @param  {Canvas} canvas
- * @param  {Object} hm - data object
- * @param  {Number} sx - shift/x
- * @param  {Number} sy - shift/y
- * @param  {Number} w  - width
- * @param  {Number} h  - height
- * @param  {Number} cc - slice index
- * @param  {Number} type - chart index.  Key == {x:0, y:1, z:2}
+ * Renders the 2D slice of the data onto the canvas based on
+ * the view's current `position`.
+ * @returns {undefined}
  */
 DatacubeView.prototype.render = function () {
   var slice = this.datacube.querySlice({
@@ -115,21 +116,17 @@ DatacubeView.prototype.render = function () {
   var width = slice.length
   var height = slice[0].length
   var image = this.ctx.createImageData(width, height)
-  var pixelIndex = -1
+  var pixelRgbaIndex = -1
   for (var x = 0; x &lt; slice.length; ++x) {
     for (var y = 0; y &lt; slice[0].length; ++y) {
       var pixelValue = slice[x][y]
-      image.data[++pixelIndex] = 0
-      image.data[++pixelIndex] = 0
-      image.data[++pixelIndex] = 0
-      image.data[++pixelIndex] = pixelValue
+      image.data[++pixelRgbaIndex] = 0
+      image.data[++pixelRgbaIndex] = 0
+      image.data[++pixelRgbaIndex] = 0
+      image.data[++pixelRgbaIndex] = pixelValue
     }
   }
   this.ctx.putImageData(image, 0, 0)
-}
-
-DatacubeView.prototype.updateBoundingClientRectangle = function () {
-  this.boundingClientRectangle = this.node.getBoundingClientRect()
 }
 
 module.exports = DatacubeView

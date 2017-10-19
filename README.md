@@ -1,5 +1,7 @@
 # datacube-image-slicer
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cdaringe/datacube-image-slicer.svg)](https://greenkeeper.io/)
+
 generate 2d slices from 3d data & paint them onto a HTML5 canvas.
 
 ![](https://raw.githubusercontent.com/MRN-Code/datacube-image-slicer/master/img/mri_animated.gif)

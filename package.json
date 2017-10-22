@@ -42,6 +42,7 @@
     "test": "testem",
     "docs:build:demo": "cd demo && npm run build",
     "docs:build:api": "jsdock build && rm -rf demo/public/docs && mv docs demo/public/",
+    "predocs:publish": "run-s docs:build:demo docs:build:api",
     "docs:publish": "gh-pages -d demo/build"
   }
 }

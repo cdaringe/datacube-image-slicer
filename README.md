@@ -25,4 +25,4 @@ new DatacubeView({
 }))
 ```
 
-more information is available in the [API docs](https://mrn-code.github.io/datacube-image-slicer)
+more information is available in the [API docs](https://cdaringe.github.io/datacube-image-slicer)

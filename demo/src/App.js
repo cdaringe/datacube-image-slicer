@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import logo from './logo.svg'
 
 var dummyBrainJson = require('url-loader!./sample-data/cubeData.json') // eslint-disable-line
 var { DatacubeView } = require('datacube-image-slicer')
@@ -31,17 +32,38 @@ class App extends Component {
     return (
       <div className='App'>
         <header className='App-header'>
-          <h1 className='App-title'>demo</h1>
+          <img src={logo} width='100px' alt='logo' />
+          <h1 className='App-title'>datacube-image-slicer</h1>
         </header>
         <div className='brains'>
-          <div className='brains-left'>
-            <canvas id='a' height='128px' width='128px' className='brain-slice' ref={a => { this.a = a }} />
-            <canvas id='b' height='128px' width='128px' className='brain-slice' ref={b => { this.b = b }} />
+          <div className='brain-col brains-left'>
+            <figure>
+              <div style={{float: 'right'}}>
+                <canvas id='a' height='128px' width='128px' className='brain-slice' ref={a => { this.a = a }} />
+                <canvas id='b' height='128px' width='128px' className='brain-slice' ref={b => { this.b = b }} />
+              </div>
+              <figcaption className='left-caption'>
+                <div>
+                  <p className='caption-xy'>x-y</p>
+                  <p className='caption-xz'>x-z</p>
+                </div>
+              </figcaption>
+            </figure>
           </div>
-          <div className='brains-right'>
-            <canvas id='c' height='128px' width='128px' className='brain-slice' ref={c => { this.c = c }} />
+          <div className='brain-col brains-right'>
+            <figure>
+              <canvas id='c' height='128px' width='128px' className='brain-slice' ref={c => { this.c = c }} />
+              <figcaption>
+                <div>
+                  <p className='caption-yz'>y-z</p>
+                </div>
+              </figcaption>
+            </figure>
           </div>
         </div>
+        <p>
+          Hover your mouse over the above frames.
+        </p>
         <hr />
         <iframe style={{ border: 0, width: '100%', height: '100%' }} src='docs/'
           title='api-docs' />

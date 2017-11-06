@@ -79,7 +79,6 @@ DatacubeView.prototype.mousemove = function (evt) {
     this.position.x = this.constrainAxisPosition({ axis: 'x', requested: evt.offsetX })
     this.position.y = this.constrainAxisPosition({ axis: 'y', requested: evt.offsetY })
   }
-  console.log(this.position)
   if (this.onMouseMove) this.onMouseMove(this)
 }
 

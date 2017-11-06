@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 
-var dummyBrainJson = require('url-loader!./sample-data/cubeData.json') // eslint-disable-line
+var dummyBrainJson = require('file-loader!./sample-data/brain.json') // eslint-disable-line
 var { DatacubeView } = require('datacube-image-slicer')
 
 class App extends Component {
@@ -9,10 +9,10 @@ class App extends Component {
     const res = await window.fetch(dummyBrainJson)
     const data = await res.json()
     var views = [
-      { data, node: this.a, axis: 'x' },
-      { data, node: this.b, axis: 'y' },
-      { data, node: this.c, axis: 'z' }
-    ].map(({ data, node, axis }) => new DatacubeView({ data, node, axis }))
+      { data, node: this.a, axis: 'x', matchCanvasToData: true },
+      { data, node: this.b, axis: 'y', matchCanvasToData: true },
+      { data, node: this.c, axis: 'z', matchCanvasToData: true }
+    ].map(view => new DatacubeView(view))
     var animationQueue = -1
     function renderAllViews (view) {
       ++animationQueue
@@ -39,8 +39,8 @@ class App extends Component {
           <div className='brain-col brains-left'>
             <figure>
               <div style={{float: 'right'}}>
-                <canvas id='a' height='128px' width='128px' className='brain-slice' ref={a => { this.a = a }} />
-                <canvas id='b' height='128px' width='128px' className='brain-slice' ref={b => { this.b = b }} />
+                <canvas id='a' className='brain-slice brain-slice-a' ref={a => { this.a = a }} />
+                <canvas id='b' className='brain-slice brain-slice-b' ref={b => { this.b = b }} />
               </div>
               <figcaption className='left-caption'>
                 <div>
@@ -52,7 +52,7 @@ class App extends Component {
           </div>
           <div className='brain-col brains-right'>
             <figure>
-              <canvas id='c' height='128px' width='128px' className='brain-slice' ref={c => { this.c = c }} />
+              <canvas id='c' className='brain-slice  brain-slice-c' ref={c => { this.c = c }} />
               <figcaption>
                 <div>
                   <p className='caption-yz'>y-z</p>

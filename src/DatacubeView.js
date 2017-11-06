@@ -1,6 +1,7 @@
 'use strict'
 
 var Datacube = require('./Datacube')
+var isNil = require('lodash/isNil')
 
 /**
  * @typedef View
@@ -8,6 +9,7 @@ var Datacube = require('./Datacube')
  * @property {Number[][][]} data
  * @property {string} axis
  * @property {Function} [onMouseMove]
+ * @property {boolean} [matchCanvasToData=true] sets height and width to the same dims as the data from the axis perspective
  */
 /**
  * @memberOf DatacubeView
@@ -28,6 +30,7 @@ function DatacubeView (view) {
   this.ctx = this.node.getContext('2d')
   this.node.addEventListener('mousemove', this.mousemove.bind(this))
   this.position = Object.assign({}, this.datacube.midpoints)
+  if (view.matchCanvasToData || isNil(view.matchCanvasToData)) this.matchCanvasToData()
   this.render()
 }
 
@@ -43,22 +46,40 @@ DatacubeView.prototype.constrainAxisPosition = function (opts) {
 }
 
 /**
+ * Resize datacube canvas node height & width to match data slice dimensions.
+ * @returns {undefined}
+ */
+DatacubeView.prototype.matchCanvasToData = function () {
+  if (this.axis === 'x') {
+    this.node.height = this.datacube.dims.z
+    this.node.width = this.datacube.dims.y
+  } else if (this.axis === 'y') {
+    this.node.height = this.datacube.dims.z
+    this.node.width = this.datacube.dims.x
+  } else { // z
+    this.node.height = this.datacube.dims.y
+    this.node.width = this.datacube.dims.x
+  }
+}
+
+/**
  * Handles a mousemove event on the canvas node & updates the view's `position`
  * value.
  * @param {Event} evt
  * @returns {undefined}
  */
 DatacubeView.prototype.mousemove = function (evt) {
-  if (this.axis === 'z') {
-    this.position.x = this.constrainAxisPosition({ axis: 'x', requested: evt.offsetX })
-    this.position.y = this.constrainAxisPosition({ axis: 'y', requested: evt.offsetY })
-  } else if (this.axis === 'x') {
+  if (this.axis === 'x') {
     this.position.y = this.constrainAxisPosition({ axis: 'y', requested: evt.offsetX })
     this.position.z = this.constrainAxisPosition({ axis: 'z', requested: evt.offsetY })
-  } else { // axis = y
+  } else if (this.axis === 'y') {
     this.position.x = this.constrainAxisPosition({ axis: 'x', requested: evt.offsetX })
     this.position.z = this.constrainAxisPosition({ axis: 'z', requested: evt.offsetY })
+  } else { // z
+    this.position.x = this.constrainAxisPosition({ axis: 'x', requested: evt.offsetX })
+    this.position.y = this.constrainAxisPosition({ axis: 'y', requested: evt.offsetY })
   }
+  console.log(this.position)
   if (this.onMouseMove) this.onMouseMove(this)
 }
 
